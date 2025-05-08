@@ -1,0 +1,14 @@
+node_modules/
+.env
+
+
+commands-list.txt
+folder_structure.txt
+
+
+rough.sql
+
+src/Rough.ts
+
+
+src/swagger2.json
