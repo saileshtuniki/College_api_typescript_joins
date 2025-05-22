@@ -7,7 +7,7 @@ export const addHodController = async(req: Request, res: Response): Promise<void
     const {name, parentId} = req.body;
 
     try {
-        if(!name || !parentId === undefined){
+        if(!name || parentId === undefined){
              res.status(400).json({
                 success: false,
                 message: `name and parent_id are required`
@@ -22,7 +22,7 @@ export const addHodController = async(req: Request, res: Response): Promise<void
         return;
     } catch (error) {
         console.error(`error in adding Hod (controller)`, (error as Error).message);
-        res.status(500).json({message:` Error while adding Hod`, error: (error as Error).message});
+        res.status(500).json({message:`Error while adding Hod`, error: (error as Error).message});
     }
 };
 
@@ -31,7 +31,7 @@ export const getHodController = async(req: Request, res: Response):Promise<void>
         const response = await getHod();
         res.status(200).json(response);
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             message: 'Error in getting hod data (controller)',
             error: (error as Error).message
         });
@@ -48,6 +48,7 @@ export const getHodByIdController = async(req: Request, res:Response): Promise<v
         const response = await getHodById(id);
         if(!response){
             res.status(404).json({error: `Hod with ${id} not found (controller)`});
+            return;
         }
         res.status(200).json({success: true, message: `Hod of id: ${id}`, data: response})
     } catch (error) {
@@ -89,6 +90,7 @@ export const getAllHodByIdController = async(req:Request, res:Response):Promise<
     const {id} = req.params;
     if(!id){
         res.status(400).json({error: `Id is required`});
+        return;
     }
     const response = await getAllHodById(Number(id));
     if(!response){

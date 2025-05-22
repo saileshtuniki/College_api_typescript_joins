@@ -15,7 +15,7 @@ const hodService_1 = require("../service/hodService");
 const addHodController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, parentId } = req.body;
     try {
-        if (!name || !parentId === undefined) {
+        if (!name || parentId === undefined) {
             res.status(400).json({
                 success: false,
                 message: `name and parent_id are required`
@@ -31,7 +31,7 @@ const addHodController = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
     catch (error) {
         console.error(`error in adding Hod (controller)`, error.message);
-        res.status(500).json({ message: ` Error while adding Hod`, error: error.message });
+        res.status(500).json({ message: `Error while adding Hod`, error: error.message });
     }
 });
 exports.addHodController = addHodController;
@@ -41,7 +41,7 @@ const getHodController = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(200).json(response);
     }
     catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             message: 'Error in getting hod data (controller)',
             error: error.message
         });
@@ -58,6 +58,7 @@ const getHodByIdController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const response = yield (0, hodService_1.getHodById)(id);
         if (!response) {
             res.status(404).json({ error: `Hod with ${id} not found (controller)` });
+            return;
         }
         res.status(200).json({ success: true, message: `Hod of id: ${id}`, data: response });
     }
@@ -99,6 +100,7 @@ const getAllHodByIdController = (req, res) => __awaiter(void 0, void 0, void 0, 
         const { id } = req.params;
         if (!id) {
             res.status(400).json({ error: `Id is required` });
+            return;
         }
         const response = yield (0, hodService_1.getAllHodById)(Number(id));
         if (!response) {

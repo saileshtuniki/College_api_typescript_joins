@@ -40,7 +40,7 @@ exports.insertHod = insertHod;
 const fetchHod = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield dbConnect_1.default.query(hodSqlQueries_1.default.hodView);
-        return result.rows;
+        return result.rows[0];
     }
     catch (error) {
         throw new Error(`Error in fetching Hod details: ${error.message}`);
@@ -50,7 +50,7 @@ exports.fetchHod = fetchHod;
 const fetchHodById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield dbConnect_1.default.query(hodSqlQueries_1.default.fetchHodByIdFunc, [id]);
-        if (result.rows[0] === 0) {
+        if (result.rows.length === 0) {
             throw new Error(`Hod not found`);
         }
         return result.rows[0];

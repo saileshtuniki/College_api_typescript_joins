@@ -77,7 +77,7 @@ describe('principal service tests', ()=> {
   describe('getPrinicpalById service', ()=>{
 
     beforeEach(()=>{
-      jest.clearAllMocks()
+      jest.clearAllMocks() 
     })
 
     it('it throw error if ID is not provided or valid', async()=>{

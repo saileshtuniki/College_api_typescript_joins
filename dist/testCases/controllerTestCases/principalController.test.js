@@ -13,10 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const principalService_1 = require("./../../service/principalService");
+// import { fetchPrincipal, updatePrincipal } from './../../repository/principalRepository';
 const supertest_1 = __importDefault(require("supertest"));
 const app_1 = require("../../app");
 // import * as principalServices from '../../service/principalService'
-const principalService_2 = require("../../service/principalService");
+// import {addPrincipal} from '../../service/principalService'
 // import {pool} from '../../app';
 const dbConnect_1 = __importDefault(require("../../config/dbConnect"));
 jest.mock('../../service/principalService');
@@ -36,14 +37,14 @@ describe('Principal Controller Tests', () => {
             // const newPrincipal = {name: 'Test Principal'};
             // const mcokCreatedPrinicpal = {id:1, newPrincipal};
             const response = yield (0, supertest_1.default)(app_1.app).post('/api/principal/addprincipal').send({});
-            principalService_2.addPrincipal.mockResolvedValue(null);
+            principalService_1.addPrincipal.mockResolvedValue(null);
             expect(response.status).toBe(400);
             expect(response.body).toEqual({ message: 'Name is not Provided' });
         }));
         it('it should create a principal and return status of 200', () => __awaiter(void 0, void 0, void 0, function* () {
             const newPrincipal = { name: 'Test Principal' };
             const mockCreatedPrinicpal = Object.assign({ id: 1 }, newPrincipal);
-            principalService_2.addPrincipal.mockResolvedValue(mockCreatedPrinicpal);
+            principalService_1.addPrincipal.mockResolvedValue(mockCreatedPrinicpal);
             const response = yield (0, supertest_1.default)(app_1.app).post('/api/principal/addprincipal').send(newPrincipal);
             expect(response.status).toBe(200);
             expect(response.body).toEqual({
@@ -54,7 +55,7 @@ describe('Principal Controller Tests', () => {
         }));
         it('it should return 500 if there is service error', () => __awaiter(void 0, void 0, void 0, function* () {
             const mockError = new Error('Service failure');
-            principalService_2.addPrincipal.mockRejectedValue(mockError);
+            principalService_1.addPrincipal.mockRejectedValue(mockError);
             const response = yield (0, supertest_1.default)(app_1.app).post('/api/principal/addprincipal').send({ name: 'Test principal' });
             // jest.spyOn('addPricipal').mockRejectedValue(mockError);
             expect(response.status).toBe(500);
@@ -163,7 +164,6 @@ describe('Principal Controller Tests', () => {
             const response = yield (0, supertest_1.default)(app_1.app).put('/api/principal/updateprincipal/1').send(mockUpdatedDetails);
             expect(response.status).toBe(200);
             expect(response.body.message).toEqual('Principal updated successfully');
-            // expect(response.body.data).toEqual(response);
         }));
         it('it should return 500 id there is any service error', () => __awaiter(void 0, void 0, void 0, function* () {
             const mockError = new Error('Update failed');
@@ -208,6 +208,42 @@ describe('Principal Controller Tests', () => {
             expect(response.body).toEqual({
                 message: 'Error while updating principal',
                 error: 'Get failed'
+            });
+        }));
+    });
+    describe('deletePrincipalController', () => {
+        it('it should return 400 if Id is not provided', () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield (0, supertest_1.default)(app_1.app).delete('/api/principal/deleteprincipal/');
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual({
+                error: 'Id is required'
+            });
+        }));
+        it('it should return 404 if id is not found or invalid id', () => __awaiter(void 0, void 0, void 0, function* () {
+            principalService_1.deletePrincipal.mockResolvedValue(null);
+            const response = yield (0, supertest_1.default)(app_1.app).delete('/api/principal/deleteprincipal/1');
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual({
+                error: 'Id not found or delete failed'
+            });
+        }));
+        it('it should return status of 200 if deletion successfull', () => __awaiter(void 0, void 0, void 0, function* () {
+            const mockDeletePrincipal = { id: 1, name: 'Test name' };
+            principalService_1.deletePrincipal.mockResolvedValue(mockDeletePrincipal);
+            const response = yield (0, supertest_1.default)(app_1.app).delete('/api/principal/deleteprincipal/1');
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual({
+                message: 'Principal and child data deleted succuessfully'
+            });
+        }));
+        it('it should return 500 status code or error message', () => __awaiter(void 0, void 0, void 0, function* () {
+            const errorMessage = 'delete failed';
+            principalService_1.deletePrincipal.mockRejectedValue(new Error(errorMessage));
+            const response = yield (0, supertest_1.default)(app_1.app).delete('/api/principal/deleteprincipal/1');
+            expect(response.status).toBe(500);
+            expect(response.body).toEqual({
+                message: `Error while deleting principal`,
+                error: errorMessage
             });
         }));
     });

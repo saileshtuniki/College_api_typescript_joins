@@ -15,41 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAllById = exports.fetchAllById = exports.updatePrincipal = exports.fetchprincipalById = exports.fetchPrincipal = exports.insertPrincipal = void 0;
 const dbConnect_1 = __importDefault(require("../config/dbConnect"));
 const principalSqlQueries_1 = __importDefault(require("../queries/principalSqlQueries"));
-// interface Principal {
-//     id: number;
-//     name: string;
-// }
-// export const insertPrincipal = async(name: string): Promise<Principal> =>{
-//     try {
-//         // calls the store procedure
-//         const result = await pool.query(principalQueries.addPrincipalProc, [name]);
-//         return result.rows[0] as Principal;
-//     } catch (error) {
-//         throw new Error(`Error inserting principal: ${(error as Error).message}`);
-//     }
-// }; 
-// export const insertPrincipal = async(name: string): Promise<Principal | null> =>{
-//     try {
-//         // calls the store procedure
-//         await pool.query(principalQueries.addPrincipalProc, [name]);
-//         const principal = await fetchprincipalById(1);
-//         return principal;
-//         // return result.rows[0] as Principal;
-//     } catch (error) {
-//         throw new Error(`Error inserting principal: ${(error as Error).message}`);
-//     }
-// }; 
-// export const insertPrincipal = async(name: string): Promise<Principal | null> =>{
-//     try {
-//         // Call the stored procedure to insert the principal
-//         const result = await pool.query(principalQueries.addPrincipalProc, [name]);
-//         // Assuming the stored procedure inserts successfully, you can now fetch the principal by id
-//         const insertedPrincipal = await fetchprincipalById(result.rows[0].id);  // Fetch the principal by ID
-//         return insertedPrincipal!;
-//     } catch (error) {
-//         throw new Error(`Error inserting principal: ${(error as Error).message}`);
-//     }
-// }; 
 // working with view i.e fetchPrincipal. (So, i can view the principal info with principalView ).
 const insertPrincipal = (name) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -77,7 +42,7 @@ exports.fetchPrincipal = fetchPrincipal;
 const fetchprincipalById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield dbConnect_1.default.query(principalSqlQueries_1.default.fetchPrincipalByIdQuery, [id]);
-        if (result.rows[0] === 0) {
+        if (result.rows.length === 0) {
             return null;
         }
         return result.rows[0];
@@ -133,3 +98,38 @@ const deleteAllById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.deleteAllById = deleteAllById;
+// interface Principal {
+//     id: number;
+//     name: string;
+// }
+// export const insertPrincipal = async(name: string): Promise<Principal> =>{
+//     try {
+//         // calls the store procedure
+//         const result = await pool.query(principalQueries.addPrincipalProc, [name]);
+//         return result.rows[0] as Principal;
+//     } catch (error) {
+//         throw new Error(`Error inserting principal: ${(error as Error).message}`);
+//     }
+// }; 
+// export const insertPrincipal = async(name: string): Promise<Principal | null> =>{
+//     try {
+//         // calls the store procedure
+//         await pool.query(principalQueries.addPrincipalProc, [name]);
+//         const principal = await fetchprincipalById(1);
+//         return principal;
+//         // return result.rows[0] as Principal;
+//     } catch (error) {
+//         throw new Error(`Error inserting principal: ${(error as Error).message}`);
+//     }
+// }; 
+// export const insertPrincipal = async(name: string): Promise<Principal | null> =>{
+//     try {
+//         // Call the stored procedure to insert the principal
+//         const result = await pool.query(principalQueries.addPrincipalProc, [name]);
+//         // Assuming the stored procedure inserts successfully, you can now fetch the principal by id
+//         const insertedPrincipal = await fetchprincipalById(result.rows[0].id);  // Fetch the principal by ID
+//         return insertedPrincipal!;
+//     } catch (error) {
+//         throw new Error(`Error inserting principal: ${(error as Error).message}`);
+//     }
+// }; 

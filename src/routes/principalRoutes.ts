@@ -9,6 +9,6 @@ router.get('/getbyid/:id', getPrincipalByIdController);
 router.put('/updateprincipal/:id', updatePrinicpalController);
 router.get('/getallbyid/:id',getAllByIdController);
 
-router.delete('/deleteprincipal/:id',deletePrincipalController);
+router.delete('/deleteprincipal/:id?',deletePrincipalController);
 export default router;
 

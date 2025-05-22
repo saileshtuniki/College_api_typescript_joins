@@ -14,7 +14,7 @@ const principalRepository_1 = require("../repository/principalRepository");
 const addPrincipal = (name) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!name) {
-            throw new Error(` Name is required`);
+            throw new Error(`Name is required`);
         }
         const result = yield (0, principalRepository_1.insertPrincipal)(name);
         return result;
@@ -37,7 +37,7 @@ exports.getPrincipal = getPrincipal;
 const getPrincipalById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!id) {
-            throw new Error(` Id is required`);
+            throw new Error(`Id is required`);
         }
         return yield (0, principalRepository_1.fetchprincipalById)(id);
     }
@@ -58,7 +58,7 @@ const serviceupdatePrincipal = (id, name) => __awaiter(void 0, void 0, void 0, f
         return result;
     }
     catch (error) {
-        throw new Error(`Error updating principal:${error.message}`);
+        throw new Error(`Error updating principal: ${error.message}`);
     }
 });
 exports.serviceupdatePrincipal = serviceupdatePrincipal;

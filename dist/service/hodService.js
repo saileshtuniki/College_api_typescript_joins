@@ -13,7 +13,7 @@ exports.deleteHod = exports.getAllHodById = exports.ServiceUpdateHod = exports.g
 const hodRepository_1 = require("../repository/hodRepository");
 const addHod = (name, parentId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (!name || !parentId === undefined) {
+        if (!name || parentId === undefined) {
             throw new Error(`Name and parentId are required`);
         }
         const result = yield (0, hodRepository_1.insertHod)(name, parentId);
@@ -22,7 +22,7 @@ const addHod = (name, parentId) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.error(`error in adding function:`, error.message);
-        throw error; // this error will pass to controller
+        throw new Error(`error in adding hod: ${error.message}`); // this error will pass to controller
     }
 });
 exports.addHod = addHod;
@@ -45,7 +45,7 @@ const getHodById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield (0, hodRepository_1.fetchHodById)(id);
     }
     catch (error) {
-        throw new Error(`Error in fetching Hod by id: ${id}`);
+        throw new Error(`Error in fetching Hod by id: ${error.message}`);
     }
 });
 exports.getHodById = getHodById;

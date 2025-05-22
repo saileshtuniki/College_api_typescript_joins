@@ -11,5 +11,5 @@ router.get('/getprincipal', principalController_1.getPrincipalController);
 router.get('/getbyid/:id', principalController_1.getPrincipalByIdController);
 router.put('/updateprincipal/:id', principalController_1.updatePrinicpalController);
 router.get('/getallbyid/:id', principalController_1.getAllByIdController);
-router.delete('/deleteprincipal/:id', principalController_1.deletePrincipalController);
+router.delete('/deleteprincipal/:id?', principalController_1.deletePrincipalController);
 exports.default = router;

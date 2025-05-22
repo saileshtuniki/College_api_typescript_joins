@@ -1,6 +1,7 @@
 export interface Hod{
     id: number;
     name: string;
+    role: string;
     parentId: number;
 }
 

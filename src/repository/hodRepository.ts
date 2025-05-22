@@ -38,7 +38,7 @@ const insertHod = async(name: string, parentId: number):Promise<Hod> =>{
 const fetchHod = async(): Promise<Hod[]> =>{
     try {
         const result = await pool.query(hodQueries.hodView);
-        return result.rows ;
+        return result.rows[0];
     } catch (error) {
         throw new Error(`Error in fetching Hod details: ${(error as Error).message}`);
     }
@@ -47,7 +47,7 @@ const fetchHod = async(): Promise<Hod[]> =>{
 const fetchHodById = async(id: number): Promise<Hod> =>{
     try {
         const result = await pool.query(hodQueries.fetchHodByIdFunc,[id]);
-        if(result.rows[0] === 0){
+        if(result.rows.length === 0){
             throw new Error(`Hod not found`);
         }
         return result.rows[0] as Hod;

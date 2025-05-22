@@ -1,11 +1,11 @@
-import { Response } from 'express';
-import { getAllByIdService, getPrincipal, getPrincipalById, serviceupdatePrincipal } from './../../service/principalService';
-import { fetchPrincipal, updatePrincipal } from './../../repository/principalRepository';
+
+import {addPrincipal, deletePrincipal, getAllByIdService, getPrincipal, getPrincipalById, serviceupdatePrincipal } from './../../service/principalService';
+// import { fetchPrincipal, updatePrincipal } from './../../repository/principalRepository';
 
 import request from 'supertest';
 import {app} from '../../app';
 // import * as principalServices from '../../service/principalService'
-import {addPrincipal} from '../../service/principalService'
+// import {addPrincipal} from '../../service/principalService'
 // import {pool} from '../../app';
 import  pool  from '../../config/dbConnect';
 
@@ -211,7 +211,6 @@ describe('PUT update the principal details', ()=>{
 
         expect(response.status).toBe(200);
         expect(response.body.message).toEqual('Principal updated successfully');
-        // expect(response.body.data).toEqual(response);
     })
 
     it('it should return 500 id there is any service error', async()=>{
@@ -280,9 +279,60 @@ describe('GET getAllByIdController to get all details in a tree format', ()=>{
             error:'Get failed'
         });
     })
-
-
 });
+
+
+describe('deletePrincipalController', ()=>{
+    it('it should return 400 if Id is not provided',async()=>{
+
+        const response = await request(app).delete('/api/principal/deleteprincipal/');
+        expect(response.status).toBe(400);
+        expect(response.body).toEqual({
+            error: 'Id is required' 
+        })
+    })
+
+    it('it should return 404 if id is not found or invalid id', async()=>{
+        (deletePrincipal as jest.Mock).mockResolvedValue(null);
+
+        const response = await request(app).delete('/api/principal/deleteprincipal/1');
+
+        expect(response.status).toBe(404);
+        expect(response.body).toEqual({
+            error: 'Id not found or delete failed'
+        });
+    })
+
+    it('it should return status of 200 if deletion successfull', async()=>{
+
+        const mockDeletePrincipal = {id: 1, name: 'Test name'};
+
+        (deletePrincipal as jest.Mock).mockResolvedValue(mockDeletePrincipal);
+
+        const response = await request(app).delete('/api/principal/deleteprincipal/1');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            message: 'Principal and child data deleted succuessfully'
+        })
+    })
+
+    it('it should return 500 status code or error message', async()=>{
+        const errorMessage = 'delete failed';
+
+        (deletePrincipal as jest.Mock).mockRejectedValue(new Error(errorMessage));
+
+        const response = await request(app).delete('/api/principal/deleteprincipal/1');
+
+        expect(response.status).toBe(500);
+        expect(response.body).toEqual({
+            message: `Error while deleting principal`,
+            error: errorMessage
+        })
+    })
+
+
+})
 
 
 

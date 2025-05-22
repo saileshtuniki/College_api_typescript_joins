@@ -4,7 +4,7 @@ import {Hod, HodResponse} from '../exportInterfaces/hodInterface'
 
 const addHod = async (name: string, parentId: number) =>{
     try {
-       if(!name || !parentId === undefined){
+       if(!name || parentId === undefined){
             throw new Error(`Name and parentId are required`);
        }
        const result = await insertHod(name, parentId);
@@ -12,7 +12,7 @@ const addHod = async (name: string, parentId: number) =>{
        return result;
     } catch (error) {
         console.error(`error in adding function:`, (error as Error).message);
-        throw error; // this error will pass to controller
+        throw new Error(`error in adding hod: ${(error as Error).message}` ) // this error will pass to controller
     }
 }
 
@@ -33,7 +33,7 @@ const getHodById = async(id: number): Promise<Hod>=>{
         }
         return await fetchHodById(id);
     } catch (error) {
-        throw new Error(`Error in fetching Hod by id: ${id}`);
+        throw new Error(`Error in fetching Hod by id: ${(error as Error).message}`);
     }
 }
 
