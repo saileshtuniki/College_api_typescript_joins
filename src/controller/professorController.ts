@@ -42,6 +42,7 @@ export const getProfessorByIdController = async (req: Request, res: Response): P
         const response = await getProfessorById(id);
         if(!response){
             res.status(404).json({error: `Professor with ${id} not found (controller)`});
+            return;
         }
         res.status(200).json({data: response});
     } catch (error) {
@@ -67,8 +68,11 @@ export const updateProfessorController = async (req: Request, res: Response): Pr
 export const getAllProfByIdController = async(req: Request, res: Response): Promise<void> =>{
     try {
         const {id} = req.params;
-        if(!id){
-            res.status(400).json({message: `Id is required`})
+        const numericId = Number(id);
+
+        if(!id || isNaN(numericId) || !Number.isInteger(numericId) || numericId <=0){
+            res.status(400).json({message: `Id is required`});
+            return;
         }
         const response = await getAllProfById(Number(id));
         res.status(200).json({message: `Professor data fetched successfully`, data: response});
@@ -87,6 +91,7 @@ export const deleteProfessorController = async (req: Request, res: Response): Pr
         const response = await deleteProfessor(Number(id));
         if(!response){
             res.status(404).json({error: `id not found or delete failed`});
+            return;
         } 
         res.status(200).json({ message: `Professor ID ${id} deleted successfully` });
     } catch (error) {

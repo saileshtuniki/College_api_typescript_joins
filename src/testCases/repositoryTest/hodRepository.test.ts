@@ -9,6 +9,11 @@ import * as HodRepo from '../../repository/hodRepository';
 import hodQueries from "../../queries/hodSqlQueries";
 
 describe('Repository layer Test cases', ()=>{
+    beforeEach(()=>{
+
+        jest.spyOn(console, 'log').mockImplementation(()=>{});
+        jest.spyOn(console, 'error').mockImplementation(()=>{});
+    })
     describe('insertHod repo',()=>{
         afterEach(()=>{
             jest.clearAllMocks();
@@ -228,6 +233,7 @@ describe("deleteAllHodById", () => {
         expect(pool.query).toHaveBeenCalledWith(`select id from college_hierarchy_tree where id=$1`, [99]);
     });
 
+    //120 test case
     it("should handle database errors gracefully", async () => {
         (pool.query as jest.Mock).mockRejectedValueOnce(new Error("Database error"));
 
@@ -235,8 +241,5 @@ describe("deleteAllHodById", () => {
         expect(pool.query).toHaveBeenCalledWith(`select id from college_hierarchy_tree where id=$1`, [3]);
     });
 });
-
-
-
 
 })

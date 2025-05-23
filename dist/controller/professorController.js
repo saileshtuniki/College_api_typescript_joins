@@ -53,6 +53,7 @@ const getProfessorByIdController = (req, res) => __awaiter(void 0, void 0, void 
         const response = yield (0, professorService_1.getProfessorById)(id);
         if (!response) {
             res.status(404).json({ error: `Professor with ${id} not found (controller)` });
+            return;
         }
         res.status(200).json({ data: response });
     }

@@ -188,4 +188,29 @@ describe('Repository layer Test cases', () => {
             expect(dbConnect_1.default.query).toHaveBeenCalledWith(hodSqlQueries_1.default.fetchAllHodByIdFunc, [3]);
         }));
     });
+    describe("deleteAllHodById", () => {
+        it("should return true when HOD exists and is deleted", () => __awaiter(void 0, void 0, void 0, function* () {
+            // Mock the check query to return rowCount as 1 (ID exists)
+            dbConnect_1.default.query.mockResolvedValueOnce({ rowCount: 1 });
+            // Mock the delete query (doesn't need to return anything)
+            dbConnect_1.default.query.mockResolvedValueOnce({});
+            const result = yield HodRepo.deleteAllHodById(2);
+            expect(result).toBe(true);
+            expect(dbConnect_1.default.query).toHaveBeenCalledWith(`select id from college_hierarchy_tree where id=$1`, [2]);
+            expect(dbConnect_1.default.query).toHaveBeenCalledWith(hodSqlQueries_1.default.deleteHodProc, [2]);
+        }));
+        it("should return false when HOD ID does not exist", () => __awaiter(void 0, void 0, void 0, function* () {
+            // Mock the check query to return rowCount as 0 (ID not found)
+            dbConnect_1.default.query.mockResolvedValueOnce({ rowCount: 0 });
+            const result = yield HodRepo.deleteAllHodById(99);
+            expect(result).toBe(false);
+            expect(dbConnect_1.default.query).toHaveBeenCalledWith(`select id from college_hierarchy_tree where id=$1`, [99]);
+        }));
+        //120 test case
+        it("should handle database errors gracefully", () => __awaiter(void 0, void 0, void 0, function* () {
+            dbConnect_1.default.query.mockRejectedValueOnce(new Error("Database error"));
+            yield expect(HodRepo.deleteAllHodById(3)).rejects.toThrow("(Repository) Error in deleting Hod by Id: Database error");
+            expect(dbConnect_1.default.query).toHaveBeenCalledWith(`select id from college_hierarchy_tree where id=$1`, [3]);
+        }));
+    });
 });

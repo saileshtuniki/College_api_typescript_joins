@@ -25,7 +25,7 @@ export const insertProfessor = async (name: string, parentId: number): Promise<P
 
     } catch (error) {
         console.error('Error inserting professor:', (error as Error).message);
-        throw new Error('Failed to insert professor: ' + (error as Error).message);
+        throw new Error(`Failed to insert professor: ${(error as Error).message}`);
     }
 };
 
@@ -67,15 +67,7 @@ export const updateProfessor = async (id: number, name: string): Promise<Profess
     }
 };
 
-// export const removeProfessor = async (id: number): Promise<{ message: string }> => {
-//     try {
-//         await pool.query(professorQueries.deleteProfessorProc, [id]);
-//         return { message: `Professor ID ${id} deleted successfully` };
-//     } catch (error) {
-//         console.error('Error deleting professor:', (error as Error).message);
-//         throw new Error('Failed to remove professor');
-//     }
-// };
+
 
 export const fetchAllProfById = async (id: number): Promise<Professor | null> => {
     try {
@@ -99,3 +91,16 @@ export const deleteAllProfessorById = async(id: number):Promise<boolean>=>{
         throw new Error(`(Repository) Error in deleting Professor by Id: ${(error as Error).message}`);
     }
 }
+
+
+
+
+// export const removeProfessor = async (id: number): Promise<{ message: string }> => {
+//     try {
+//         await pool.query(professorQueries.deleteProfessorProc, [id]);
+//         return { message: `Professor ID ${id} deleted successfully` };
+//     } catch (error) {
+//         console.error('Error deleting professor:', (error as Error).message);
+//         throw new Error('Failed to remove professor');
+//     }
+// };

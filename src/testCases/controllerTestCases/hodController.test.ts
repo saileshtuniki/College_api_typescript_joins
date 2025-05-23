@@ -366,10 +366,8 @@ describe('Hod Controller Tests', ()=>{
                     message: `Error while deleting Hod`,
                     error: errorMessage
                 })
-            })
-
-        
+            });
     })
 
 
-})
+});

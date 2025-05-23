@@ -68,10 +68,13 @@ export const deleteStudentController = async(req: Request, res: Response): Promi
         if(!id){
             res.status(400).json({error: `Id is required`});
             return;
+            
         }
         const response = await deleteStudent(Number(id));
         if(!response){
             res.status(404).json({message: `id not found or delete failed`});
+            return;
+            
         }
         res.status(200).json({message: `Student id: ${id} deleted successfully`})
     } catch (error) {

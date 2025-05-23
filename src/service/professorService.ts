@@ -6,10 +6,11 @@ export const addProfessor = async (name: string, parentId: number) => {
         if (!name || !parentId) {
             throw new Error('Name and Parent ID are required');
         }
-        return await insertProfessor(name, parentId);
+        const result =  await insertProfessor(name, parentId);
+        return result;
     } catch (error) {
         console.error('Error adding professor:', (error as Error).message);
-        throw new Error('Failed to add professor');
+        throw new Error(`Failed to add professor ${(error as Error).message}`);
     }
 };
 
@@ -25,20 +26,22 @@ export const getProfessor = async (): Promise<Professor[]> => {
 export const getProfessorById = async (id: number): Promise<Professor> => {
     try {
         if (!id) throw new Error('ID is required');
-        return await fetchProfessorById(id);
+        const result = await fetchProfessorById(id);
+        return result;
     } catch (error) {
         console.error('Error fetching professor by ID:', (error as Error).message);
-        throw new Error('Failed to fetch professor by ID');
+        throw new Error(`Failed to fetch professor by ID ${(error as Error).message}`);
     }
 };
 
 export const serviceUpdateProfessor = async (id: number, name: string): Promise<ProfessorResponse> => {
     try {
         if (!id || !name) throw new Error('ID and Name are required');
-        return await updateProfessor(id, name);
+        const result =  await updateProfessor(id, name);
+        return result;
     } catch (error) {
         console.error('Error updating professor:', (error as Error).message);
-        throw new Error('Failed to update professor');
+        throw new Error(`Failed to update professor ${(error as Error).message}`);
     }
 };
 
@@ -53,7 +56,7 @@ export const getAllProfById = async(id: number): Promise<Professor | null> =>{
         }
         return result;
     } catch (error) {
-        throw new Error(`Error in fetching Professor:${(error as Error).message}`);
+        throw new Error(`Error in fetching Professor: ${(error as Error).message}`);
     }
 }
 
